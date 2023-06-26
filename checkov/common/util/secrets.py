@@ -207,7 +207,10 @@ def omit_secret_value_from_graph_checks(
             for attribute, secret in entity_config.items():
                 if attribute in resource_masks:
                     if isinstance(secret, list) and secret:
-                        secrets.add(secret[0])
+                        if type(secret[0]) is dict:
+                            secrets.add('{}'.format(secret[0]))
+                        else:
+                            secrets.add(secret[0])
 
     if not secrets:
         logging.debug(f"Secret was not saved in {check.id}, can't omit")
